@@ -1,7 +1,8 @@
-package com.ankit.workdaytest
+package com.ankit.workdaytest.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ankit.workdaytest.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

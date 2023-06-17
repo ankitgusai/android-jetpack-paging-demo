@@ -1,4 +1,4 @@
-package com.ankit.workdaytest.detail
+package com.ankit.workdaytest.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import com.ankit.workdaytest.R
 
 /**
- * Displays selected image detail
+ * Landing fragment. Displays search ability with FAB, loads images based on user query
  */
-class ImageDetailFragment : Fragment() {
+class NASAImagesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +20,8 @@ class ImageDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image_detail, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_nasa_images, container, false)
     }
+
 }
