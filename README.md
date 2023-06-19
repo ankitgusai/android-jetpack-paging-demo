@@ -23,7 +23,7 @@ I have tried to follow single Activity MVVM pattern with clear saperation betwee
 
 ## how to build / run the app
 
-Open in Andoid Studio and press Run 'app'.
+Open the Project in Android Studio, click **Build** from menu options and select **Rebuild Project** and then press Run 'app'.
 
 ## App Screenshots
 
