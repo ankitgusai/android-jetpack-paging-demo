@@ -7,7 +7,7 @@ data class Collection(val items: List<Item>, val metadata: Metadata, val links: 
 
 data class Item(val data: List<Data>, val links: List<Link>)
 
-data class Data(val title: String, val nasa_id: String, val date_created: String)
+data class Data(val title: String, val nasa_id: String, val date_created: String, val description: String)
 
 data class Link(val href: String)
 

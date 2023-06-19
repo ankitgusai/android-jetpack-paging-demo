@@ -8,14 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ankit.workdaytest.R
 import com.ankit.workdaytest.databinding.FragmentNasaImagesBinding
 import com.ankit.workdaytest.ui.MainViewModel
@@ -27,6 +28,8 @@ import kotlinx.coroutines.launch
  * Landing fragment. Displays search ability with FAB, loads images based on user query
  */
 class NASAImagesFragment : Fragment() {
+    private var _binding: FragmentNasaImagesBinding? = null
+    private val binding get() = _binding!!
     private val sharedViewModel: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,61 +41,82 @@ class NASAImagesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val binding = DataBindingUtil.inflate<FragmentNasaImagesBinding>(layoutInflater, R.layout.fragment_nasa_images, container, false)
+        //UI setup
+        _binding = FragmentNasaImagesBinding.inflate(inflater, container, false)
 
-        binding.floatingActionButton.setOnClickListener {
-            binding.floatingActionButton.animate()
-                .scaleX(0f)
-                .scaleY(0f)
-                .alpha(0f)
-                .setDuration(300)
-                .withEndAction(Runnable { // Hide the FAB button
-                    binding.floatingActionButton.visibility = View.GONE
-
-                    // Display the EditText with animation
-                    binding.editTextText.visibility = View.VISIBLE
-                    binding.editTextText.requestFocus()
-                    val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                    imm!!.showSoftInput(binding.editTextText, InputMethodManager.SHOW_IMPLICIT)
-
-                })
-                .start()
+        val pagingAdapter = SearchItemAdapter(requireContext()) {
+            sharedViewModel.selectItem(it)
+            findNavController().navigate(R.id.imageDetailFragment)
         }
 
-        binding.editTextText.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
-
-                binding.floatingActionButton.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .alpha(1f)
-                    .setDuration(300)
-                    .withStartAction { binding.floatingActionButton.visibility = View.VISIBLE }
-                    .withEndAction { binding.editTextText.visibility = View.GONE }
-                    .start()
-                if (!TextUtils.isEmpty(binding.editTextText.text.trim())) {
-                    sharedViewModel.setSearchQuery(binding.editTextText.text.trim().toString())
-                }
-                return@setOnEditorActionListener false; // Consume the event
-            }
-            return@setOnEditorActionListener false; // Let the system handle the event
-        }
-
-        val pagingAdapter = SearchItemAdapter(requireContext())
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = pagingAdapter
 
 
-// Activities can use lifecycleScope directly, but Fragments should instead use
-// viewLifecycleOwner.lifecycleScope.
-        lifecycleScope.launch {
-            sharedViewModel.searchResults.collectLatest { pagingData ->
-                pagingAdapter.submitData(pagingData)
-            }
+        //UI Listeners
+        binding.fabSearch.setOnClickListener {
+            binding.fabSearch.animate().scaleX(0f).scaleY(0f).alpha(0f).setDuration(300)
+                .withEndAction { // Hide the FAB button
+                    binding.fabSearch.visibility = View.GONE
+                    // Display the EditText with animation
+                    binding.etSearch.visibility = View.VISIBLE
+                    binding.etSearch.requestFocus()
+                    val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                    imm!!.showSoftInput(binding.etSearch, InputMethodManager.SHOW_IMPLICIT)
 
+                }
+                .start()
+        }
+
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+
+                binding.fabSearch.animate().scaleX(1f).scaleY(1f).alpha(1f).setDuration(300)
+                    .withStartAction { binding.fabSearch.visibility = View.VISIBLE }
+                    .withEndAction { binding.etSearch.visibility = View.GONE }
+                    .start()
+                if (!TextUtils.isEmpty(binding.etSearch.text.trim())) {
+                    sharedViewModel.setSearchQuery(binding.etSearch.text.trim().toString())
+                }
+            }
+            return@setOnEditorActionListener false; // Let the system handle the event
+        }
+
+
+        binding.btRetry.setOnClickListener {
+            pagingAdapter.retry()
+        }
+
+        //Easy Adapter state handling (loading, loaded, error empty etc)
+        pagingAdapter.addLoadStateListener { loadState ->
+            // Show loading spinner during initial load or refresh.
+            binding.pbLoading.isVisible = loadState.source.refresh is LoadState.Loading
+            // Show the retry state if initial load or refresh fails.
+            binding.btRetry.isVisible = loadState.source.refresh is LoadState.Error
+            // Show error message.
+            val errorState = loadState.source.refresh as? LoadState.Error
+            binding.tvMessage.isVisible = errorState != null
+            binding.tvMessage.text = errorState?.error?.localizedMessage
+
+            if (errorState == null && loadState.source.append.endOfPaginationReached && pagingAdapter.itemCount < 1){
+                binding.tvMessage.isVisible = true
+                binding.tvMessage.text = "No result for your query"
+            }
+        }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sharedViewModel.searchResults.collectLatest { pagingData ->
+                    pagingAdapter.submitData(pagingData)
+                }
+            }
         }
 
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // to avoid memory leaks.
+    }
 }

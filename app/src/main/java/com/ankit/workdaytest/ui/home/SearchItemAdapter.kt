@@ -2,6 +2,8 @@ package com.ankit.workdaytest.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -11,7 +13,8 @@ import com.ankit.workdaytest.databinding.ItemSearchImageBinding
 import com.ankit.workdaytest.networking.models.Item
 import com.bumptech.glide.Glide
 
-class SearchItemAdapter(private val context: Context) : PagingDataAdapter<Item, ItemViewHolder>(ItemComparator) {
+class SearchItemAdapter(private val context: Context, private val itemClicked: (item: Item) -> Unit) :
+    PagingDataAdapter<Item, SearchItemAdapter.ItemViewHolder>(ItemComparator) {
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bindItem(getItem(position)!!)
     }
@@ -20,17 +23,30 @@ class SearchItemAdapter(private val context: Context) : PagingDataAdapter<Item, 
         val viewHolder = ItemSearchImageBinding.inflate(LayoutInflater.from(context), parent, false)
         return ItemViewHolder(viewHolder)
     }
-}
 
-class ItemViewHolder(private val itemBinding: ItemSearchImageBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-    fun bindItem(item: Item) {
-        itemBinding.tvTitle.text = item.data[0].title
-        itemBinding.tvDate.text = item.data[0].date_created
-        Glide.with(itemBinding.ivThumb.context)
-            .load(item.links[0].href) // assuming `Item` has a property `imageUrl`
-            .placeholder(R.drawable.image_placeholder_24) // optional placeholder
-            .error(R.drawable.error_image_24) // optional error image
-            .into(itemBinding.ivThumb)
+    inner class ItemViewHolder(private val itemBinding: ItemSearchImageBinding) : RecyclerView.ViewHolder(itemBinding.root), OnClickListener {
+        var item: Item? = null
+
+        init {
+            itemBinding.root.setOnClickListener(this@ItemViewHolder)
+        }
+
+        fun bindItem(item: Item) {
+            this.item = item
+            itemBinding.tvTitle.text = item.data[0].title
+            itemBinding.tvDate.text = item.data[0].date_created
+            Glide.with(itemBinding.ivThumb.context)
+                .load(item.links[0].href) // assuming `Item` has a property `imageUrl`
+                .placeholder(R.drawable.image_placeholder_24) // optional placeholder
+                .error(R.drawable.error_image_24) // optional error image
+                .into(itemBinding.ivThumb)
+        }
+
+        override fun onClick(v: View?) {
+            item?.also {
+                itemClicked(it)
+            }
+        }
     }
 }
 

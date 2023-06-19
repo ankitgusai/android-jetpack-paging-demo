@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.flow
 class NasaImageRepository(
     private val nasaAPI: NasaAPI,
     private val totalEntries: MutableStateFlow<Int>
-    ) {
+) {
 
     /**
-     * Provides search image resource flow based on the query params for pagination.
+     * Search image pagination Flow.
      */
     fun searchImages(query: String): Flow<PagingData<Item>> {
         return Pager(PagingConfig(pageSize = 20)) {
@@ -24,8 +24,12 @@ class NasaImageRepository(
         }.flow
     }
 
-    fun getImageAssetDetail(nasaId: String) = flow<Unit> {
-        //todo implement the body
+    /**
+     * Provides image assets based on nasa Id.
+     */
+    fun getImageAssetDetail(nasaId: String) = flow {
+        val res = nasaAPI.getAssetById(nasaId)
+        emit(res)
     }
 
     /**
@@ -34,47 +38,38 @@ class NasaImageRepository(
     class SearchImageSource(
         private val api: NasaAPI,
         private val query: String,
-        private val totalEntries: MutableStateFlow<Int>) : PagingSource<String, Item>() {
-        override fun getRefreshKey(state: PagingState<String, Item>): String?
-    {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.nextKey ?: anchorPage?.prevKey
+        private val totalEntries: MutableStateFlow<Int>
+    ) : PagingSource<String, Item>() {
+        override fun getRefreshKey(state: PagingState<String, Item>): String? {
+            return state.anchorPosition?.let { anchorPosition ->
+                val anchorPage = state.closestPageToPosition(anchorPosition)
+                anchorPage?.nextKey ?: anchorPage?.prevKey
+            }
         }
-    }
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, Item> {
-        return try {
-            //The key here is the url provided in the REST API response
-            val nextPage = params.key ?: searchInitialUrl(query, 1, 20)
-            val response = api.search(nextPage)
-            val nextKey = response.collection.links.find { it.rel == "next" }?.href
-            val prevKey = null // not providing ability to go back
+        override suspend fun load(params: LoadParams<String>): LoadResult<String, Item> {
+            return try {
+                //The key here is the url provided in the REST API response
+                val response = if (params.key != null) {
+                    api.search(params.key as String)
+                } else {
+                    api.search(query, 1, 20)
+                }
 
-            totalEntries.emit(response.collection.metadata.total_hits) // update the total entries
+                val nextKey = response.collection.links?.find { it.rel == "next" }?.href
+                val prevKey = null // not providing ability to go back
 
-            LoadResult.Page(
-                data = response.collection.items,
-                prevKey = prevKey,
-                nextKey = nextKey
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            //TODO A decent error handling with appropriate message would be nice
-            LoadResult.Error(e)
+                totalEntries.emit(response.collection.metadata.total_hits) // update the total entries
+
+                LoadResult.Page(
+                    data = response.collection.items,
+                    prevKey = prevKey,
+                    nextKey = nextKey
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                LoadResult.Error(e)
+            }
         }
-    }
-
-        /**
-         * get the first query
-         * https://images-api.nasa.gov/search?q=IO&page=4&page_size=100&media_type=image
-         */
-        fun searchInitialUrl(
-            searchQuery: String,
-            pageNo: Int,
-            pageSize: Int
-        ) = "${BASE}search?q=${searchQuery}&page=${pageNo}&page_size=${pageSize}&media_type=image"
-
-
     }
 }
