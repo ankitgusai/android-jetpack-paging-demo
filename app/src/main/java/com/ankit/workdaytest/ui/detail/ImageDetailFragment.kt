@@ -45,6 +45,7 @@ class ImageDetailFragment : Fragment() {
                     with(item!!) {
                         binding.tvTitleDetail.text = data[0].title
                         binding.tvDescriptionDetail.text = data[0].description
+                        binding.tvDateDetails.text = data[0].date_created
                         setImage(links[0].href)
                     }
 
@@ -78,7 +79,7 @@ class ImageDetailFragment : Fragment() {
             .load(url)
             .placeholder(binding.ivHighRes.drawable) // the low res thumb image is the placeholder
             .error(R.drawable.error_image_24)
-            .listener(object : RequestListener<Drawable?> { //This listener extension can be created with lifecycle awareness for less boilerplate
+            .listener(object : RequestListener<Drawable?> { //An Extension for this listener can be created with lifecycle awareness for less boilerplate
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
                     if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                         binding.pbLoadingHighRes.visibility = View.GONE

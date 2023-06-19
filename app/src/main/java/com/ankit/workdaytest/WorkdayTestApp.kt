@@ -6,6 +6,5 @@ class WorkdayTestApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        //todo init repos here for brevity
     }
 }

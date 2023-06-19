@@ -1,6 +1,8 @@
 package com.ankit.workdaytest.networking.models
 
-// JSON response model for GSON
+/**
+ * API response model for /search endpoint
+ */
 data class ImageSearchResponse(val collection: Collection)
 
 data class Collection(val items: List<Item>, val metadata: Metadata, val links: List<Links>)

@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 
+/**
+ * Nasa image repo backed by a network source
+ */
 class NasaImageRepository(
     private val nasaAPI: NasaAPI,
     private val totalEntries: MutableStateFlow<Int>

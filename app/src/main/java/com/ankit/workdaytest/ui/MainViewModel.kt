@@ -21,6 +21,7 @@ import java.lang.IllegalStateException
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     // Total entries StateFlow
     private val _totalEntries = MutableStateFlow(0)
+    //TODO set totalEntries in the header of Paging Adapter
     val totalEntries: StateFlow<Int>
         get() = _totalEntries
 
@@ -33,14 +34,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _searchQuery.value = query
     }
 
-    // Flow of PagingData
+    // Flow of Paging Data
     val searchResults: Flow<PagingData<Item>> = _searchQuery
         .filter { !TextUtils.isEmpty(it) }
         .flatMapLatest { query -> repo.searchImages(query) }
         .cachedIn(viewModelScope)
 
 
-    private val _selectedItem = MutableStateFlow<Item?>(null)  // Use MutableStateFlow if you prefer
+    private val _selectedItem = MutableStateFlow<Item?>(null)
     val selectedItem: StateFlow<Item?> = _selectedItem
 
     fun selectItem(selectedItem: Item) {
@@ -49,7 +50,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // SharedFlow to expose to UI
+    // Item detail flow, Could use StateFlow if we add Loading state in Response class
     val itemDetails: Flow<Response<String>>
         get() = _selectedItem.filter { searchedItem -> searchedItem != null }
             .flatMapLatest { searchedItem ->
