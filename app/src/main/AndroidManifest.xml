@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.WorkdayTest"
+        android:theme="@style/Theme.NasaImages"
         tools:targetApi="31">
         <activity
             android:name=".ui.MainActivity"

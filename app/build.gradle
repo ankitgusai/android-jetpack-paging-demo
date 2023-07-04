@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.ankit.workdaytest'
+    namespace 'com.ankit.nasaimages'
     compileSdk 33
 
     defaultConfig {

@@ -1,5 +1,5 @@
 
-# Ankitigiri Gusai Workday Mobile Engineer Take Home Test
+# Trying out Jetpack paging library 
 
 
 ## Libraries used
@@ -19,7 +19,7 @@
 
 ## Overview of the app architecture
 
-I have tried to follow single Activity MVVM pattern with clear saperation between ViewModel, Views and Data source.  Activity ViewModel is shared between listing and detail fragment as it made sense in these case. ~~DataBinding~~ ViewBinding is used to bind model to View (Althogh I prefer DataBinding in more complex projects)
+I have tried to follow single Activity MVVM pattern with clear separation between ViewModel, Views and Data source.  Activity ViewModel is shared between listing and detail fragment as it made sense in these case. ~~DataBinding~~ ViewBinding is used to bind model to View (Althogh I prefer DataBinding in more complex projects)
 
 ## how to build / run the app
 
