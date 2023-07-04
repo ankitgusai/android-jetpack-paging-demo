@@ -1,8 +1,8 @@
-package com.ankit.workdaytest
+package com.ankit.nasaimages
 
 import android.app.Application
 
-class WorkdayTestApp: Application() {
+class NasaImagesApp: Application() {
 
     override fun onCreate() {
         super.onCreate()

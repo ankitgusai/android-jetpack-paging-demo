@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.ankit.workdaytest"
+        applicationId "com.ankit.nasaimages"
         minSdk 24
         targetSdk 33
         versionCode 1

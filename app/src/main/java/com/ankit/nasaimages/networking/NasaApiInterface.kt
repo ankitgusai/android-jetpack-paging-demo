@@ -1,7 +1,7 @@
-package com.ankit.workdaytest.networking
+package com.ankit.nasaimages.networking
 
-import com.ankit.workdaytest.networking.models.ImageAssetResponse
-import com.ankit.workdaytest.networking.models.ImageSearchResponse
+import com.ankit.nasaimages.networking.models.ImageAssetResponse
+import com.ankit.nasaimages.networking.models.ImageSearchResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

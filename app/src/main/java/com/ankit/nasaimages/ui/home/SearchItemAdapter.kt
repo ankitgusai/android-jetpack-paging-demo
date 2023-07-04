@@ -1,4 +1,4 @@
-package com.ankit.workdaytest.ui.home
+package com.ankit.nasaimages.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.ankit.workdaytest.R
-import com.ankit.workdaytest.databinding.ItemSearchImageBinding
-import com.ankit.workdaytest.networking.models.Item
+import com.ankit.nasaimages.R
+import com.ankit.nasaimages.databinding.ItemSearchImageBinding
+import com.ankit.nasaimages.networking.models.Item
 import com.bumptech.glide.Glide
 
 class SearchItemAdapter(private val context: Context, private val itemClicked: (item: Item) -> Unit) :

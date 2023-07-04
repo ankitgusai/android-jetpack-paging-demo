@@ -1,4 +1,4 @@
-package com.ankit.workdaytest
+package com.ankit.nasaimages
 
 import org.junit.Test
 

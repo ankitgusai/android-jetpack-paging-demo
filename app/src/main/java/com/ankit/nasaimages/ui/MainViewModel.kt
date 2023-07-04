@@ -1,4 +1,4 @@
-package com.ankit.workdaytest.ui
+package com.ankit.nasaimages.ui
 
 import android.app.Application
 import android.text.TextUtils
@@ -6,9 +6,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.ankit.workdaytest.networking.NasaAPINetwork
-import com.ankit.workdaytest.networking.NasaImageRepository
-import com.ankit.workdaytest.networking.models.Item
+import com.ankit.nasaimages.networking.NasaAPINetwork
+import com.ankit.nasaimages.networking.NasaImageRepository
+import com.ankit.nasaimages.networking.models.Item
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,9 +1,9 @@
-package com.ankit.workdaytest.ui
+package com.ankit.nasaimages.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.ankit.workdaytest.R
+import com.ankit.nasaimages.R
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()

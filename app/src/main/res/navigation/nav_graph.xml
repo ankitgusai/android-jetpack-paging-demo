@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/NASAImagesFragment"
-        android:name="com.ankit.workdaytest.ui.home.NASAImagesFragment"
+        android:name="com.ankit.nasaimages.ui.home.NASAImagesFragment"
         android:label="fragment_nasa_images"
         tools:layout="@layout/fragment_nasa_images" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/imageDetailFragment"
-        android:name="com.ankit.workdaytest.ui.detail.ImageDetailFragment"
+        android:name="com.ankit.nasaimages.ui.detail.ImageDetailFragment"
         android:label="fragment_image_detail"
         tools:layout="@layout/fragment_image_detail" />
 </navigation>

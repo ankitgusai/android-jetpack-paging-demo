@@ -1,4 +1,4 @@
-package com.ankit.workdaytest.ui.detail
+package com.ankit.nasaimages.ui.detail
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -11,10 +11,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.ankit.workdaytest.R
-import com.ankit.workdaytest.databinding.FragmentImageDetailBinding
-import com.ankit.workdaytest.ui.MainViewModel
-import com.ankit.workdaytest.ui.Response
+import com.ankit.nasaimages.R
+import com.ankit.nasaimages.databinding.FragmentImageDetailBinding
+import com.ankit.nasaimages.ui.MainViewModel
+import com.ankit.nasaimages.ui.Response
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException

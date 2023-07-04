@@ -1,4 +1,4 @@
-package com.ankit.workdaytest.ui.home
+package com.ankit.nasaimages.ui.home
 
 import android.content.Context
 import android.os.Bundle
@@ -17,9 +17,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ankit.workdaytest.R
-import com.ankit.workdaytest.databinding.FragmentNasaImagesBinding
-import com.ankit.workdaytest.ui.MainViewModel
+import com.ankit.nasaimages.R
+import com.ankit.nasaimages.databinding.FragmentNasaImagesBinding
+import com.ankit.nasaimages.ui.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

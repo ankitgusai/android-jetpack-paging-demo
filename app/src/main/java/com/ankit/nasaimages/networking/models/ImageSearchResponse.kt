@@ -1,4 +1,4 @@
-package com.ankit.workdaytest.networking.models
+package com.ankit.nasaimages.networking.models
 
 /**
  * API response model for /search endpoint
