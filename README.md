@@ -31,6 +31,3 @@ Open the Project in Android Studio, click **Build** from menu options and select
 ![Searching](screenshots/ss-2.png)
 ![Search Results](screenshots/ss-3.png)
 ![Image Detail](screenshots/ss-4.png)
-
-## Additional Detail
-I have not been able to put much efforts into the testing part of the requirements but rest of the app I have tried to optimize best to my knowledge :). 
